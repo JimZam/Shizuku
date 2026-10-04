@@ -79,7 +79,8 @@ object AdbStarter {
                 Settings.Global.putLong(cr, "adb_allowed_connection_time", 0L)
             }
         
-            if (!EnvironmentUtils.isAdbEnabled()) throw IllegalStateException("ADB is not enabled")
+            val adbEnabled = Settings.Global.getInt(cr, Settings.Global.ADB_ENABLED, 0)
+            if (adbEnabled == 0) throw IllegalStateException("ADB is not enabled")
 
             ShizukuStateMachine.set(ShizukuStateMachine.State.STOPPING)
             val key = AdbKey(PreferenceAdbKeyStore(ShizukuSettings.getPreferences()), "shizuku")
